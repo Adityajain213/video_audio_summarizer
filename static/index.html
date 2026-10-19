@@ -154,25 +154,62 @@ h1 mark{background:linear-gradient(transparent 62%,var(--mark) 62%);color:inheri
 <script>
 const $ = id => document.getElementById(id);
 const root = document.documentElement;
-function paintTheme() { $("theme").textContent = root.dataset.theme === "dark" ? "☀️ Light" : "🌙 Dark"; }
+
+// Update the theme button label.
+function paintTheme() {
+  $("theme").textContent =
+    root.dataset.theme === "dark" ? "☀️ Light" : "🌙 Dark";
+}
+
+// Handle Light/Dark mode switching.
 $("theme").onclick = () => {
-  root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
-  try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+  root.dataset.theme =
+    root.dataset.theme === "dark" ? "light" : "dark";
+
+  try {
+    localStorage.setItem("theme", root.dataset.theme);
+  } catch (e) {}
+
   paintTheme();
-const ACCENTS = {violet:"#7c3aed", teal:"#0f766e", green:"#15803d", orange:"#c2410c", rose:"#e11d48"};
-if (!ACCENTS[root.dataset.accent]) root.dataset.accent = "violet";
+}; // IMPORTANT: Close the theme handler here.
+
+// Keep this code OUTSIDE the theme handler.
+const ACCENTS = {
+  violet: "#7c3aed",
+  teal: "#0f766e",
+  green: "#15803d",
+  orange: "#c2410c",
+  rose: "#e11d48"
+};
+
 function paintAccents() {
   $("sw").innerHTML = Object.entries(ACCENTS).map(([k, c]) =>
-    `<button type="button" data-a="${k}" style="background:${c}" aria-label="${k}" aria-pressed="${root.dataset.accent === k}"></button>`).join("");
-  $("sw").querySelectorAll("button").forEach(b => b.onclick = () => {
-    root.dataset.accent = b.dataset.a;
-    try { localStorage.setItem("accent", b.dataset.a); } catch (e) {}
-    paintAccents();
+    `<button type="button" data-a="${k}" style="background:${c}"
+      aria-label="${k}"
+      aria-pressed="${root.dataset.accent === k}"></button>`
+  ).join("");
+
+  $("sw").querySelectorAll("button").forEach(b => {
+    b.onclick = () => {
+      root.dataset.accent = b.dataset.a;
+
+      try {
+        localStorage.setItem("accent", b.dataset.a);
+      } catch (e) {}
+
+      paintAccents();
+    };
   });
 }
-paintAccents();
-};
+
+// Initialize both controls when the page loads.
+if (!ACCENTS[root.dataset.accent]) {
+  root.dataset.accent = "violet";
+}
+
 paintTheme();
+paintAccents();
+
 const STEPS = ["Fetching the audio","Transcribing speech","Writing the summary","Finding actions, decisions and questions","Preparing chat"];
 const TABS = [["summary","Summary"],["action_items","Action items"],["key_decisions","Decisions"],["open_questions","Open questions"],["transcript","Transcript"]];
 const SUGGEST = ["Who owns which task?","What was decided?","What was left unresolved?"];
