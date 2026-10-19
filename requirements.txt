@@ -1,0 +1,38 @@
+# CPU-only PyTorch (much smaller and cheaper to host than the default CUDA build)
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Web server
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+
+# Audio / video
+yt-dlp>=2024.4.9
+pydub>=0.25.1
+ffmpeg-python>=0.2.0
+audioop-lts; python_version >= "3.13"
+
+# Speech-to-text (local Whisper, CPU)
+openai-whisper>=20231117
+torch>=2.2.0
+numpy>=1.26.0
+tiktoken>=0.7.0
+
+# Translation
+deep-translator>=1.11.4
+
+# LLM + RAG
+langchain>=0.2.0
+langchain-core>=0.2.0
+langchain-community>=0.2.0
+langchain-google-genai
+langchain-chroma
+chromadb>=0.5.0
+sentence-transformers>=3.0.0
+langchain-huggingface>=0.0.3
+huggingface-hub>=0.23.0
+
+# Utilities
+python-dotenv>=1.0.0
+requests>=2.32.0
+tqdm>=4.66.0
